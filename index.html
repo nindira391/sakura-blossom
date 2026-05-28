@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voice Music</title>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #ffd6e8, #ffe8f2, #ffc2e2);
+    color: #4a1f2e;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Efek Sakura Berguguran */
+.sakura {
+    position: fixed;
+    top: -10%;
+    color: #ffb6c1;
+    user-select: none;
+    pointer-events: none;
+    animation: fall linear infinite;
+    font-size: 18px;
+    opacity: 0.8;
+    z-index: 1;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotate(0deg) translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(110vh) rotate(360deg) translateX(100px);
+      opacity: 0;
+    }
+  }
+
+  header {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  header h1 {
+    font-size: 3rem;
+    color: #d63384;
+    text-shadow: 2px 2px 10px rgba(214, 51, 132, 0.3);
+  }
+
+  header p {
+    font-size: 1.1rem;
+    color: #8a4a63;
+    margin-top: 8px;
+  }
+
+  /* Slider Foto */
+.slider {
+    position: relative;
+    max-width: 900px;
+    margin: 40px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(214, 51, 132, 0.25);
+    z-index: 2;
+  }
+
+.slides {
+    display: flex;
+    transition: transform 0.8s ease-in-out;
+  }
+
+.slides img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+.dots {
+    text-align: center;
+    margin: 15px 0 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+.dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 6px;
+    background-color: #f8b6d2;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+.dot.active,.dot:hover {
+    background-color: #d63384;
+  }
+
+  /* Player Musik */
+.player {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    max-width: 600px;
+    margin: 0 auto 60px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 20px rgba(214, 51, 132, 0.2);
+    position: relative;
+    z-index: 2;
+  }
+
+.player h2 {
+    color: #d63384;
+    margin-bottom: 15px;
+  }
+
+  @media (max-width: 768px) {
+.slides img { height: 300px; }
+    header h1 { font-size: 2rem; }
+.sakura { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Container Efek Sakura -->
+<div id="sakura-container"></div>
+
+<header>
+  <h1>Voice Music</h1>
+  <p>Rasakan musik dengan suasana pink yang lembut</p>
+</header>
+
+<!-- Slider Foto -->
+<div class="slider">
+  <div class="slides" id="slides">
+    <img src="attachment://0" alt="Hamster">
+    <img src="attachment://1" alt="Sakura 1">
+    <img src="attachment://2" alt="Sakura 2">
+  </div>
+</div>
+
+<div class="dots">
+  <span class="dot active" onclick="currentSlide(0)"></span>
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+</div>
+
+<!-- Player Musik YouTube -->
+<div class="player">
+  <h2>🎵 Now Playing</h2>
+  <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px;">
+    <iframe
+      src="https://www.youtube.com/embed/ZYBWv4vCZKI?loop=1&playlist=ZYBWv4vCZKI"
+      style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<script>
+  // Script Slider Otomatis
+  let slideIndex = 0;
+  const slides = document.getElementById('slides');
+  const dots = document.querySelectorAll('.dot');
+  const totalSlides = dots.length;
+
+  function showSlide(index) {
+    slides.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[index].classList.add('active');
+  }
+
+  function currentSlide(index) {
+    slideIndex = index;
+    showSlide(slideIndex);
+  }
+
+  setInterval(() => {
+    slideIndex = (slideIndex + 1) % totalSlides;
+    showSlide(slideIndex);
+  }, 4000);
+
+  // Script Efek Sakura Jatuh
+  const container = document.getElementById('sakura-container');
+  const sakuraCount = 35;
+
+  for (let i = 0; i < sakuraCount; i++) {
+    let sakura = document.createElement('div');
+    sakura.classList.add('sakura');
+    sakura.innerHTML = '❀';
+    sakura.style.left = Math.random() * 100 + 'vw';
+    sakura.style.animationDuration = Math.random() * 5 + 7 + 's';
+    sakura.style.animationDelay = Math.random() * 5 + 's';
+    sakura.style.fontSize = Math.random() * 10 + 12 + 'px';
+    sakura.style.opacity = Math.random() * 0.5 + 0.5;
+    container.appendChild(sakura);
+  }
+</script>
+
+</body>
+  </html>
